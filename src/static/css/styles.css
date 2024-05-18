@@ -1,0 +1,312 @@
+/* General */
+.navbar-custom {
+    background-color: #131921;
+    min-height: 70px;
+}
+
+.navbar-brand img {
+    width: 150px;
+    margin-left: 15px;
+}
+
+.btn-warning img {
+    max-height: 20px;
+}
+
+.btn,
+.btn-secondary,
+.btn-group,
+#cart,
+#cartGroup {
+    margin: 0px;
+    padding: 0px;
+}
+
+button#cart.btn.btn-secondary {
+    margin: 0px;
+    padding: 0px;
+}
+
+nav.navbar.justify-content-between.navbar-custom {
+    margin: 0px;
+    padding: 0px;
+}
+
+
+/* Item cards related */
+#catalogo {
+    padding: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-gap: 5px 20px;
+    grid-auto-flow: dense;
+    /* Ensure that remaining items fill in the gaps */
+}
+
+.card {
+    align-items: center;
+}
+
+.card img {
+    padding: 4px;
+	max-height: 179px;
+	max-width: 179px;
+	height: 179px;
+	display: inline-block;
+    align-self: center;
+}
+
+.card-text {
+    font-size: x-large;
+}
+
+.card-body,
+.input-group,
+.container {
+    margin: 0px;
+    padding: 0px;
+}
+
+.card-title,
+.card-text,
+.card-author {
+    /* Impide que la tarjeta tenga un titulo largo */
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 160px;
+    white-space: nowrap;
+}
+
+.card-container {
+    width: 200px;
+    height: 440px;
+    margin: 0px;
+    padding: 10px;
+    float: left;
+}
+
+.card-title,
+.card-author,
+.card-text {
+    padding: 0px;
+    margin: 2px;
+}
+
+.card-text {
+    font-weight: bold;
+}
+
+.form-control {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.card-price {
+    position: relative;
+    font-size: x-large;
+    font-weight: 600;
+    margin-left: 2px;
+}
+
+/* Makes the cent appear on the top and smaller */
+.cents {
+    position: absolute;
+    top: 0.4em;
+    font-size: small;
+    font-weight: 400;
+    margin-left: 2px;
+}
+
+/* Categories Dropdown Menu */
+#categoriesButton {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    font-size: small;
+    height: 38px;
+}
+
+
+
+/* Search Bar related */
+#searchbar {
+    border-radius: 0px;
+    margin-right: 0px;
+}
+
+#searchbutton {
+    border-top-left-radius: 0px;
+    /*This makes the search elements be square to each other*/
+    border-bottom-left-radius: 0px;
+    margin-left: 0px;
+    width: 50px;
+}
+
+#searchArea {
+    width: calc(100% - 320px);
+    /* Makes the search bar fill the space*/
+}
+
+
+/* Footer specific */
+#foot {
+    height: 40px;
+    padding: 15px;
+    background-color: #131921;
+    text-align: center;
+    color: white;
+    position: fixed;
+    font-size: small;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    display: block;
+}
+
+
+
+/* User Menu related */
+#userArea {
+    width: 50px;
+    margin: 5px;
+}
+
+#userDropdown {
+    width: 50px;
+}
+
+#userButton {
+    border-radius: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    color: white;
+    border-width: 0px;
+    /*Removes outline from button*/
+}
+
+
+
+
+/* Cart Related */
+#containerCart {
+    display: flex;
+    align-items: center;
+    /* Vertically center items */
+    justify-content: center;
+    /* Horizontally center items */
+    height: 60px;
+}
+
+#totalCart {
+    text-align: right;
+}
+
+#cart {
+    color: #e9810b;
+    background: url('../img/icons8-shopping-cart-96.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 50px;
+    width: 55px;
+    display: inline-block;
+    /* Remove the table-cell display */
+    line-height: 20px;
+    /* Vertically center the text */
+    text-align: center;
+    /* Horizontally center the text */
+    font-weight: bold;
+    border: none;
+    margin-left: 15px;
+    margin-right: 5px;
+}
+
+.cartItem img {
+    height: 50px;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.dropdown-menu {
+    width: 300px;
+}
+
+#categoriesButton {
+    width: 150px;
+}
+
+.cartDeleteButton {
+    border: 0px;
+    background-color: transparent;
+}
+
+.cartDeleteButton img {
+    width: 30px;
+    height: 30px
+}
+
+.cartItem {
+    width: 280px;
+    display: flex;
+    align-items: center;
+}
+
+#checkoutButton {
+    float: right;
+    margin-right: 20px;
+}
+
+
+
+/* Add space to prevent total from not being displayed */
+#subtotalArea {
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+
+iframe {
+    height: 500px;
+}
+
+#myModal {
+    width: 340px;
+}
+
+
+
+/* Responsiveness */
+@media (max-width: 600px) {
+
+    /* Makes the elements be in different rows */
+    #searchArea,
+    #containerCart {
+        display: block;
+        width: 100%;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    /* Makes the categories fill the width */
+    #categoriesButton,
+    .dropdown,
+    .btn-group {
+        width: 100%;
+    }
+
+    /* Makes the corners rounded since the search elements aren't next to each other */
+    #searchbar,
+    #categoriesButton,
+    .dropdown,
+    .btn-group {
+        border-radius: 5px;
+        margin-right: 0px;
+        margin-top: 5px;
+    }
+
+    /* Makes the searchButton fill the width and round */
+    #searchbutton {
+        border-radius: 5px;
+        width: 100%;
+        margin-top: 5px;
+    }
+}

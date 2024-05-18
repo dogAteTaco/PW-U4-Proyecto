@@ -1,0 +1,22 @@
+{% extends './base.html' %}
+{% block titulo %} Inicio de Sesión{% endblock %}
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/checkoutStyles.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/loginStyles.css') }}">
+{% endblock %}
+
+{% block cuerpo %}
+<center>
+	<form id="loginArea" action="/login" method="POST">
+		<h2>Inicia Sesión</h2>
+		<input id="userInput" class="form-control" type="text" name="username" autocomplete="username" placeholder="Usuario">
+		<input  id="loginPassword" name="password" type="password" autocomplete="current-password" class="form-control" placeholder="Contraseña">
+		<button id="loginButton" class="btn btn-warning mt-2">Iniciar Sesión</button>
+	</form>
+	<div id="errorArea" style="display: none;" class="alert alert-danger" role="alert">
+		This is a danger alert—check it out!
+	</div>
+</center>
+</div>
+
+{% endblock %}

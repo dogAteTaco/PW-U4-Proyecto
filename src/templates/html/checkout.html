@@ -1,0 +1,45 @@
+{% extends './base.html' %}
+{% block titulo %} Carrito{% endblock %}
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/checkoutStyles.css') }}">
+<script type="module" src="{{ url_for('static',filename='js/checkoutScript.js') }}"></script>
+
+<script>
+	var complete_catalog = JSON.parse('{{ catalog|safe }}');
+</script>
+{% endblock %}
+
+{% block cuerpo %}
+
+<center>
+	<div id="cartArea" class="container">
+		<div id="cartArea">
+			<h1>Carrito</h1>
+			<table class="table  table-striped table-hover">
+				<thead class="thead-dark">
+					<tr>
+						<th></th>
+						<th>Nombre</th>
+						<th>Cantidad</th>
+						<th>Precio</th>
+						<th>Subtotal</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody id="tablaCarrito">
+					<!-- Aquí se agregarán las filas de la tabla con los resultados -->
+				</tbody>
+			</table>
+		</div>
+		<div id="subtotalArea" class="container">
+			<p id="subTotal"></p>
+			<input id="giftCB" type="checkbox"><span>Este pedido es un regalo</span><br>
+
+		</div>
+		<div id="buttons" class="container">
+			<button class="btn btn-warning" id="botonPagar">Proceder al pago</button>
+			<button class="btn btn-danger" id="botonBorrar">Limpiar Carrito</button>
+		</div>
+	</div>
+</center>
+{% endblock %}

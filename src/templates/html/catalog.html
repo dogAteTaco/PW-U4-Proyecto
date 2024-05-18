@@ -1,0 +1,27 @@
+{% extends './base.html' %}
+{% block titulo %} Carrito{% endblock %}
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/catalogStyles.css') }}">
+<script type="module" src="{{ url_for('static',filename='js/catalogScript.js') }}"></script>
+<script>
+	var complete_catalog = JSON.parse('{{ catalog|safe }}');
+</script>
+{% endblock %}
+
+{% block cuerpo %}
+
+<div class="container">
+	<h2>Catálogo de Productos</h2>
+	<div id="catalogSearchArea">
+		<input id="catalogSearchbar" class="search" class="form-control" type="search" placeholder="Buscar producto...">
+	</div>
+	<div>
+		<a href="newProduct.html"><button class="btn btn-success">Agregar Nuevo</button></a>
+	</div>
+	<div id="catalogProductsArea">
+		<!-- Product Cards go here -->
+	</div>
+</div>
+
+
+{% endblock %}

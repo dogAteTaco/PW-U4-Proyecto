@@ -1,0 +1,76 @@
+{% extends './base.html' %}
+{% block titulo %} Carrito{% endblock %}
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/usersStyles.css') }}">
+<script type="module" src="{{ url_for('static',filename='js/usersScript.js') }}"></script>
+<script>
+	var users_catalog = JSON.parse('{{ users_catalog|safe }}');
+	var complete_catalog = JSON.parse('{{ catalog|safe }}');
+</script>
+{% endblock %}
+
+{% block cuerpo %}
+<div class="container">
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">Usuarios</th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td scope="row">
+					<!-- Users listed here -->
+					<div id="listedUsers">
+
+					</div>
+					<div id="addUserArea">
+						<button id="addUserButton" class="btn btn-success">Agregar</button>
+					</div>
+
+				</td>
+				<td>
+					<div id="usersArea">
+						<div class="card">
+							<div class="card-body">
+								<input id="userIdField" class="userInput" type="text" class="form-control"
+									placeholder="Id de Usuario" disabled="true">
+								<input id="userField" class="userInput" type="text" class="form-control"
+									placeholder="Usuario" disabled="true">
+								<input id="fullNameField" class="userInput" type="text" class="form-control"
+									placeholder="Nombre Completo" disabled="true">
+								<input id="passwordField" class="passwordInput" type="password" class="form-control"
+									placeholder="Nueva contraseña" disabled="true">
+								<input id="confirmPasswordField" class="passwordInput" type="password" class="form-control"
+									placeholder="Confirmar contraseña" disabled="true">
+								<div class="dropdown">
+									<button id="typeButton" class="btn btn-secondary dropdown-toggle" type="button"
+										data-bs-toggle="dropdown" aria-expanded="false" disabled="true">
+
+									</button>
+									<ul id="typeMenu" class="dropdown-menu">
+										<li><a id="typeAdmin" class="dropdown-item" href="#">Administrador</a></li>
+										<li><a id="typeClient" class="dropdown-item" href="#">Cliente</a></li>
+									</ul>
+								</div>
+							</div>
+							<div id="errorArea" style="display: none;" class="alert alert-danger" role="alert">
+								This is a danger alert—check it out!
+							</div>
+							<div id="successArea" style="display: none;" class="alert alert-success" role="alert">
+								This is a danger alert—check it out!
+							</div>
+							<div id="userCatalogButtons">
+								<button id="saveButton" class="btn btn-primary" disabled>Guardar</button>
+								<button id="deleteButton" class="btn btn-danger" disabled>Borrar</button>
+							</div>
+						</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>
+</div>
+{% endblock %}

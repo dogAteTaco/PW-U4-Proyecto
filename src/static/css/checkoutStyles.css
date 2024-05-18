@@ -1,0 +1,64 @@
+.cartImg{
+	max-height: 50px;
+}
+
+#giftCB{
+	margin-right: 10px;
+	padding-top: 10px;
+	margin-bottom: 20px;
+}
+
+#botonPagar{
+	padding-left: 80px;
+	padding-right: 80px;
+	margin-bottom: 20px;
+	width: 100%;
+	filter: drop-shadow(1px 1px 2px #000000);
+}
+
+.container{
+	margin: 10px;
+	padding: 10px;
+}
+
+#checkoutArea{
+    padding-left: 200px;
+    color: white;
+}
+
+#checkoutButton{
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+#botonBorrar{
+    margin-bottom: 60px;
+	width: 200px;
+}
+
+#buttons{
+	text-align: center;
+}
+
+#cartArea{
+	padding: 15px;
+}
+
+.navbar{
+	height: 75px;
+}
+
+h2{
+	text-align: center;
+	padding: 50px;
+}
+
+.footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	background-color: red;
+	color: white;
+	text-align: center;
+  }

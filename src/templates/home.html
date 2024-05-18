@@ -1,0 +1,25 @@
+{% extends './base.html' %}
+{% block titulo %} Inicio de Sesión{% endblock %}
+{% block customCSS %}
+<script type="module" src="{{ url_for('static',filename='js/homeScript.js') }}"></script>
+<script>
+	var mysqlHost = "{{ mysql_host }}";
+	var mysqlUser = "{{ mysql_user }}";
+	var mysqlPassword = "{{ mysql_password }}";
+	var mysqlDb = "{{ mysql_db }}";
+	var shown_items = JSON.parse('{{ filtered|safe }}');
+	var complete_catalog = JSON.parse('{{ catalog|safe }}');
+	var text_filter = '{{ text_filter|safe }}';
+	var type_filter = '{{ type_filter|safe }}';
+</script>
+{% endblock %}
+
+{% block cuerpo %}
+
+<div class="container" id="catalogo-container">
+	<div class="row" id="catalogo">
+		<!-- Card containers will be dynamically generated here -->
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+/* Login Page specific */
+
+
+#loginArea{
+    max-width: 350px;
+}
+
+#loginArea *{
+    margin: 10px;
+}
+
+#loginButton{
+    width: 150px;
+}
+
+#searchArea, #containerCart{
+	visibility: hidden;
+}
+
+.btn-group{
+	visibility: hidden;
+}
