@@ -1,18 +1,7 @@
-
 let completeCatalog;
-
 let added = 0;
 var typeFilter = "E";
-let userLogged;
-let users = [];
-
-class User {
-	constructor(name, password, type) {
-		this.name = name;
-		this.password = password;
-		this.type = type;
-	}
-}
+let current_catalog = [];
 
 class CartItem {
 	constructor(id, quantity) {
@@ -32,20 +21,27 @@ class Product {
 	}
 }
 
-let cartItems = [];
 
 
 document.addEventListener("DOMContentLoaded", function () {
 	ModalFunctionality();
 	AddUserOptions();
+
+	const searchButton = document.getElementById("searchbutton");
+	const searchBar = document.getElementById("searchbar");
+	const allItems = document.getElementById("allItems");
+	const cdItems = document.getElementById("cdItems");
+	const bookItems = document.getElementById("bookItems");
+	const catButton = document.getElementById("categoriesButton");
+	const logoutButton = document.getElementById("logoutButton");
 	// Turns the catalog in the server into an array of objects
-	var current_catalog = [];
+	
 	for (var i = 0; i < shown_items.length; i++) {
 		var productData = shown_items[i];
 		var product = new Product(productData.id, productData.name, productData.author, productData.price, productData.img, productData.type);
+		//console.log(product);
 		current_catalog.push(product);
 	}
-
 	completeCatalog = [];
 	for (var i = 0; i < complete_catalog.length; i++) {
 		var productData = complete_catalog[i];
@@ -54,16 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 	// createConnection();
 	loadProducts(current_catalog);
-	const searchButton = document.getElementById("searchbutton");
-	const searchBar = document.getElementById("searchbar");
-	const allItems = document.getElementById("allItems");
-	const cdItems = document.getElementById("cdItems");
-	const bookItems = document.getElementById("bookItems");
-	const catButton = document.getElementById("categoriesButton");
-	const logoutButton = document.getElementById("logoutButton");
-
 	
-
 	//Loads the saved cart
 	refreshCart();
 	//Sets up the UI correctly if it navigates with filters from another page
@@ -161,7 +148,16 @@ function loadProducts(catalog) {
 			button.addEventListener('click', function () {
 				
 				let cartItems;
-				let cartData = JSON.parse(localStorage.getItem("cart"));
+				let cartData;
+
+				if(localStorage.getItem("cart")!=null&&localStorage.getItem("cart")!="undefined") {
+					cartData = JSON.parse(localStorage.getItem("cart"));
+				}
+				else
+				{
+					localStorage.setItem("cart","[]");
+					cartData = JSON.parse(localStorage.getItem("cart"));
+				}
 				if (cartData) {
 					cartItems = cartData.map(item => new CartItem(item.id, item.quantity));
 				}

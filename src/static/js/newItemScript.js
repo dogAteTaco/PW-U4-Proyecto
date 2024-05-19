@@ -1,8 +1,5 @@
 let completeCatalog;
-let nameField;
-let authorField;
-let priceField;
-let users;
+
 class User {
     constructor(name, password, type) {
         this.name = name;
@@ -13,21 +10,13 @@ class User {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-	console.log(localStorage.getItem("users"));
-	if (!localStorage.getItem("logged"))
-    	window.location.href = "../index.html";
-	users = JSON.parse(localStorage.getItem("users")).map(item => new User(item.id, item.password, item.type));
-	console.log(users);
-	// Verifies the user is Admin
-	if(!isAdmin(localStorage.getItem("user")))
-	{
-		window.location.href = "../index.html";
-	}
 
 	let saveButton = document.getElementById("saveButton");
 	let nameField = document.getElementById("nameField");
 	let authorField = document.getElementById("authorField");
 	let priceField = document.getElementById("priceField");
+	let albumButton = document.getElementById("typeAlbum");
+	let bookButton = document.getElementById("typeBook");
 	let typeButton = document.getElementById("typeButton");
 	let imageField = document.getElementById("imageField");
 	let imageShown = document.getElementById("imageShown");
@@ -77,15 +66,55 @@ document.addEventListener("DOMContentLoaded", function () {
 			imageURL = "../img/products/"+imageField.value;
 		imageShown.src = imageURL;
 	});
+	let event = new Event('input', {
+		bubbles: true,
+		cancelable: true,
+	});
+	
+	// Dispatch the 'input' event on 'imageField'
+	imageField.dispatchEvent(event);
+	// const backButton = document.getElementById("backButton");
+	// backButton.addEventListener('click', function(event){
+	// 	event.stopPropagation();
+	// 	console.log("algo");
+	// 	window.location.href = "catalog.html";
+	// });
+	albumButton.addEventListener('click', function (event) {
+		event.preventDefault(); 
+		// Get the closest card item (it's corresponding card)
+		var card = this.closest('.card');
+		var category = card.querySelector('.typeButton.btn.btn-secondary.dropdown-toggle');
+		category.innerText = this.innerText;
+		
+		var typeInput = card.querySelector('.typeField');
+		typeInput.value = 'A'; 
 
-	const backButton = document.getElementById("backButton");
-	backButton.addEventListener('click', function(event){
-		event.stopPropagation();
-		console.log("algo");
-		window.location.href = "catalog.html";
+		card.style.backgroundColor = '#f7d800';
+	});
+
+	bookButton.addEventListener('click', function (event) {
+		event.preventDefault();  
+		var card = this.closest('.card');
+		
+		var category = card.querySelector('.typeButton.btn.btn-secondary.dropdown-toggle');
+		category.innerText = this.innerText;
+		
+		var typeInput = card.querySelector('.typeField');
+		typeInput.value = 'B'; 
+
+		card.style.backgroundColor = '#f7d800';
 	});
 });
 
+// Imports functions for shared functionality of the searchbar
+import { refreshCart } from './generalScript.js';
+refreshCart();
+import { AddUserOptions } from './generalScript.js';
+AddUserOptions();
+import { ModalFunctionality } from './generalScript.js';
+ModalFunctionality();
+import { SearchBarFunctionatility } from './searchScript.js';
+SearchBarFunctionatility();
 
 function addItem(id,name,author,price,image,type)
 {
@@ -101,15 +130,4 @@ function addItem(id,name,author,price,image,type)
 	console.log(newItem);
 	completeCatalog.push(newItem);
 	refreshStorage();
-}
-
-function refreshStorage()
-{
-	const catalogJSON = JSON.stringify(completeCatalog);
-    localStorage.setItem("catalog", catalogJSON);
-}
-
-function isAdmin(userId) {
-	console.log("verificaAdmin");
-	return users.some(user => user.name === userId && user.type == "A");
 }

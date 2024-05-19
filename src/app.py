@@ -1,7 +1,7 @@
 ## py -m venv env
 ## env\Scripts\activate
 ## Set-ExecutionPolicy Unrestricted -Scope Process
-from flask import Flask, redirect, render_template, request, url_for, flash, abort
+from flask import Flask, redirect, render_template, request, url_for, flash, abort, jsonify
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_mysqldb import MySQL
 from config import config
@@ -63,30 +63,46 @@ def home():
 	text_filter_global = request.args.get('text_filter')
 	type_filter_global = request.args.get('type_filter')
     
-
-
+	print(type_filter_global)
+	print(text_filter_global)
 	if text_filter_global is None and type_filter_global is None:
 		filtered_json_products = get_products()
+		print('no filtros')
 	else:
 		filtered_json_products = get_products_filtered()
+		print('con filtro?')
 	# Gets complete product list
 	json_products = get_products()
 
-
-
-
+	print(filtered_json_products)
 	return render_template("home.html",mysql_host=app.config["MYSQL_HOST"],
                            mysql_user=app.config["MYSQL_USER"],
                            mysql_password=app.config["MYSQL_PASSWORD"],
                            mysql_db=app.config["MYSQL_DB"],catalog = json_products, filtered = filtered_json_products, text_filter = text_filter_global, type_filter = type_filter_global, type_user = current_user.usertype )
-	# return render_template("home.html",)
 
-@app.route("/catalog")
+@app.route("/catalog", methods=["GET", "POST"])
 @login_required #requiere que haya un usuario loggeado
 @admin_required
 def catalog():
+	if request.method == "POST":
+		print(request.form['action'])
+		if request.form['action']=='save':
+			product = Product(request.form['id'], request.form['name'],request.form['author'],request.form['img'],request.form['price'],request.form['type'])
+			ModelProducts.update_product(db,product)
+		elif request.form['action']=='delete':
+			ModelProducts.delete_product(db,request.form['id'])
 	json_products = get_products()
 	return render_template("html/catalog.html",catalog = json_products,type_user = current_user.usertype )
+
+@app.route("/newproduct", methods=["GET", "POST"])
+@login_required #requiere que haya un usuario loggeado
+@admin_required
+def newproduct():
+	if request.method == "POST":
+		product = Product(0,request.form['name'],request.form['author'],request.form['img'],request.form['price'],request.form['type'])
+		ModelProducts.insert_product(db,product)
+	json_products = get_products()
+	return render_template("html/newProduct.html",catalog = json_products,type_user = current_user.usertype )
 
 @app.route("/users")
 @login_required #requiere que haya un usuario loggeado
@@ -101,6 +117,12 @@ def users():
 def checkout():
 	complete_catalog = get_products()
 	return render_template("html/checkout.html",catalog = complete_catalog, type_user = current_user.usertype )
+
+@app.route("/ticket")
+@login_required
+def ticket():
+	complete_catalog = get_products()
+	return render_template("html/ticket.html",catalog = complete_catalog, type_user = current_user.usertype )
 
 @app.route("/calculator")
 def calculator():

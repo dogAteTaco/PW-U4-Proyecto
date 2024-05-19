@@ -70,57 +70,65 @@ export function AddUserOptions() {
 
 export function refreshCart() {
 	let cartItems;
-	let cartData = JSON.parse(localStorage.getItem("cart"));
-	if (cartData) {
-		cartItems = cartData.map(item => new CartItem(item.id, item.quantity));
+	let cartData;
+
+	if(localStorage.getItem("cart")!=null&&localStorage.getItem("cart")!="undefined") {
+		cartData = JSON.parse(localStorage.getItem("cart"));
+		if (cartData) {
+			cartItems = cartData.map(item => new CartItem(item.id, item.quantity));
+		}
 	}
 	const cartTag = document.getElementById("cart");
 	const cartTotal = document.getElementById("totalSpan");
 	//Resets the total
 	let total = 0;
-	let added = cartItems.length;
+	let added = 0;
 	const items = document.getElementById("cartItems");
 	items.innerHTML = "";
 	let cartItemDiv = document.createElement("div");
 	// Recalculates the total of the cart and redraws it
-	cartItems.forEach((item) => {
-		var currentItem = complete_catalog.find(p => p.id.toString() === item.id.toString());
-		total = Number.parseFloat(total) + Number.parseFloat(item.quantity) * currentItem.price;
-		cartItemDiv = document.createElement("div");
+	if(cartItems)
+		cartItems.forEach((item) => {
+			var currentItem = complete_catalog.find(p => p.id.toString() === item.id.toString());
+			if(!currentItem)
+				return;
+			added = added +1;
+			total = Number.parseFloat(total) + Number.parseFloat(item.quantity) * currentItem.price;
+			cartItemDiv = document.createElement("div");
 
-		let imageURL = currentItem.img;
-		if (!currentItem.img.toLowerCase().startsWith("http"))
-			imageURL = "../img/products/" + currentItem.img;
+			let imageURL = currentItem.img;
+			if (!currentItem.img.toLowerCase().startsWith("http"))
+				imageURL = "../img/products/" + currentItem.img;
 
-		cartItemDiv.innerHTML = `
-        <div class="cartItem" name="${currentItem.id}">
-            <div style="display: inline; margin-right:10px;"><img src="${imageURL}"></div>
-            <span style="flex-grow: 1; padding-right: 15px;">${currentItem.name}</span>
-            <span style="text-align: right;">$${currentItem.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} x${item.quantity}</span>
-            <span><button class="cartDeleteButton"><img style="width: 30px; height:30px" src="https://freepngtransparent.com/wp-content/uploads/2023/03/X-Png-112.png"></button></span>
-        </div>
-        `;
+			cartItemDiv.innerHTML = `
+			<div class="cartItem" name="${currentItem.id}">
+				<div style="display: inline; margin-right:10px;"><img src="${imageURL}"></div>
+				<span style="flex-grow: 1; padding-right: 15px;">${currentItem.name}</span>
+				<span style="text-align: right;">$${currentItem.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} x${item.quantity}</span>
+				<span><button class="cartDeleteButton"><img style="width: 30px; height:30px" src="https://freepngtransparent.com/wp-content/uploads/2023/03/X-Png-112.png"></button></span>
+			</div>
+			`;
 
-		var deleteButton = cartItemDiv.querySelector('.cartDeleteButton');
+			var deleteButton = cartItemDiv.querySelector('.cartDeleteButton');
 
-		// Add event listener to the delete button
-		deleteButton.addEventListener('click', function (event) {
-			event.stopPropagation();
-			// Get the parent div of the delete button, which is the cartItem div
-			var cartItemDiv = deleteButton.closest('.cartItem');
-			// Get the span containing the currentItem.id
+			// Add event listener to the delete button
+			deleteButton.addEventListener('click', function (event) {
+				event.stopPropagation();
+				// Get the parent div of the delete button, which is the cartItem div
+				var cartItemDiv = deleteButton.closest('.cartItem');
+				// Get the span containing the currentItem.id
 
-			// Removes it based on the ID of the row
-			removeById(cartItemDiv.getAttribute('name'));
-			// Remove the cartItem div
-			cartItemDiv.remove();
-			refreshCart();
-			// Get a reference to the dropdown menu's parent element
-			var dropdownParent = document.querySelector('.dropdown-menu').parentNode;
+				// Removes it based on the ID of the row
+				removeById(cartItemDiv.getAttribute('name'));
+				// Remove the cartItem div
+				cartItemDiv.remove();
+				refreshCart();
+				// Get a reference to the dropdown menu's parent element
+				var dropdownParent = document.querySelector('.dropdown-menu').parentNode;
 
-			// Add the 'show' class to the dropdown menu's parent element to open the dropdown
-			dropdownParent.classList.add('show');
-		});
+				// Add the 'show' class to the dropdown menu's parent element to open the dropdown
+				dropdownParent.classList.add('show');
+			});
 
 		// Append the Cart Item to the items container
 		items.appendChild(cartItemDiv);

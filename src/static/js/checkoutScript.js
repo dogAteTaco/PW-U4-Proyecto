@@ -1,5 +1,12 @@
 let cartItems;
+let cartCount;
 
+class CartItem {
+	constructor(id, quantity) {
+		this.id = id;
+		this.quantity = quantity;
+	}
+}
 document.addEventListener("DOMContentLoaded", function () {
 	SearchBarFunctionatility();
 	AddUserOptions();
@@ -22,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     payButton.addEventListener("click", function (event) {
         event.preventDefault();
-        window.location.href = 'ticket.html';
+        window.location.href = 'ticket';
     });
 
 });
@@ -41,19 +48,30 @@ SearchBarFunctionatility();
 function loadBoughtItems() {
     const cartTable = document.getElementById("tablaCarrito");
     // Obtener los envíos almacenados en el almacenamiento local
-    cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-    //Elimina las filas de la tabla
-    cartTable.innerHTML = "";
-    if (cartItems.length == 0) {
-        document.getElementById("cartArea").innerHTML = "<div class=\"container\"><h2>Tu carrito esta vacío.</h2>"
-            + "<center><a href=\"landing.html\"><button class=\"btn btn-warning mt-2\">Regresar a tienda</button></a></center></div>";
-    }
-    else {
-        // Recorrer los envíos y agregar filas a la tabla
+	let cartData;
+
+	if(localStorage.getItem("cart")!=null&&localStorage.getItem("cart")!="undefined") {
+		cartData = JSON.parse(localStorage.getItem("cart"));
+		if (cartData) {
+			cartItems = cartData.map(item => new CartItem(item.id, item.quantity));
+		}
+		if(cartItems.lenght==0)
+		{
+			//Elimina las filas de la tabla
+		cartTable.innerHTML = "";
+		
+		document.getElementById("cartArea").innerHTML = "<div class=\"container\"><h2>Tu carrito esta vacío.</h2>"
+				+ "<center><a href=\"home\"><button class=\"btn btn-warning mt-2\">Regresar a tienda</button></a></center></div>";
+		}
+		else{
+			// Recorrer los envíos y agregar filas a la tabla
+		cartCount = 0;
         cartItems.forEach((item) => {
             const row = document.createElement("tr");
             const currentItem = complete_catalog.find(p => p.id.toString() === item.id.toString());
-			console.log(currentItem.id);
+			if(!currentItem)
+				return;
+			cartCount = cartCount +1;
             let imageURL = currentItem.img;
             if(!currentItem.img.toLowerCase().startsWith("http"))
 			    imageURL = "../img/products/"+currentItem.img;
@@ -83,28 +101,40 @@ function loadBoughtItems() {
 
         });
         refreshTotal();
-        
-    }
+		}
+		
+	}
+	else
+	{
+		//Elimina las filas de la tabla
+		cartTable.innerHTML = "";
+		
+		document.getElementById("cartArea").innerHTML = "<div class=\"container\"><h2>Tu carrito esta vacío.</h2>"
+				+ "<center><a href=\"home\"><button class=\"btn btn-warning mt-2\">Regresar a tienda</button></a></center></div>";
+	}
+    
+
 
 }
 
 function refreshTotal() {
     let subTotal = 0;
-    if (cartItems.length == 0) {
+    if (cartCount == 0) {
         document.getElementById("cartArea").innerHTML = "<div class=\"container\"><h2>Tu carrito esta vacío.</h2>"
-            + "<center><a href=\"landing.html\"><button class=\"btn btn-warning mt-2\">Regresar a tienda</button></a></center></div>";
+            + "<center><a href=\"home\"><button class=\"btn btn-warning mt-2\">Regresar a tienda</button></a></center></div>";
     }
     else {
         // Recorrer los envíos y agregar filas a la tabla
         cartItems.forEach((item) => {
             const currentItem = complete_catalog.find(p => p.id.toString() === item.id.toString());
-            subTotal = subTotal + Number.parseFloat(currentItem.price) * Number.parseFloat(item.quantity);
+			if(currentItem)
+            	subTotal = subTotal + Number.parseFloat(currentItem.price) * Number.parseFloat(item.quantity);
         });
         const subtotalTag = document.getElementById("subTotal");
         let prodLabel = "producto";
-        if(cartItems.length>1)
+        if(cartCount>1)
             prodLabel = "productos";
-        subtotalTag.innerHTML = "<span style=\"font-size: x-large;\"> Total (" + cartItems.length + " "+prodLabel+"): <b>$" + subTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " USD</b></span>";
+        subtotalTag.innerHTML = "<span style=\"font-size: x-large;\"> Total (" + cartCount + " "+prodLabel+"): <b>$" + subTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " USD</b></span>";
     }
 
 }

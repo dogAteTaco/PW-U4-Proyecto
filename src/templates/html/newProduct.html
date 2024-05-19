@@ -1,77 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends './base.html' %}
+{% block titulo %} Nuevo Producto{% endblock %}
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/catalogStyles.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/newProductStyles.css') }}">
+<script type="module" src="{{ url_for('static',filename='js/newItemScript.js') }}"></script>
+<script>
+	var complete_catalog = JSON.parse('{{ catalog|safe }}');
+</script>
+{% endblock %}
 
-<head>
-	<meta charset="UTF-8">
-	<script src="../js/newItemScript.js"></script>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Nuevo Producto | rainforest</title>
-	<link rel="stylesheet" href="../css/styles.css">
-	<link rel="stylesheet" href="../css/catalogStyles.css">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-		crossorigin="anonymous"></script>
-</head>
-
-<body>
-	<nav class="navbar justify-content-between navbar-custom">
-		<a class="navbar-brand" href="../index.html"><img src="../img/rainforestw.png" alt=""></a>
-		<button id="backButton" class="btn btn-primary">Volver a Catálogo</button>
-	</nav>
-	<div class="container">
-		<h2>Nuevo Producto</h2>
+{% block cuerpo %}
+		
 		<div class="card">
+			<h2>Nuevo Producto</h2>
 			<div class="card-body">
-				<table class="table">
-					<tbody>
-						<tr>
-							<td class="coverSection"><img id="imageShown" src=""></th>
-							<td>
-								<div>
-									<span>Nombre de Producto</span>
-									<input id="nameField" class="form-control" type="text" placeholder="Nombre de Producto">
-								</div>
-								<div>
-									<span>Autor o Artista</span>
-									<input id="authorField" class="form-control" type="text" placeholder="Autor o Artista">
-									
-								</div>
-								<div>
-									<span>Imagen</span>
-									<input id="imageField" class="form-control" type="text" placeholder="URL de imagen">
-								</div>
-								<div>
-									<span>Precio</span>
-									<input id="priceField" class="form-control" type="number" step="any" placeholder="Precio">
-								</div>
-								<div>
-									<div class="dropdown">
-										<span>Tipo</span>
-										<button id="typeButton" class="btn btn-secondary dropdown-toggle" type="button"
-											data-bs-toggle="dropdown" aria-expanded="false">Álbum</button>
-										<ul id="typeMenu" class="dropdown-menu">
-											<li><a id="typeAlbum" class="dropdown-item" href="#">Álbum</a></li>
-											<li><a id="typeBook" class="dropdown-item" href="#">Libro</a></li>
-										</ul>
+				<form method="POST">
+					<table class="table">
+						<tbody>
+							<tr>
+								<td class="coverSection"><img id="imageShown" class="imageShown" src=""></th>
+								<td>
+									<div>
+										<span>Nombre de Producto</span>
+										<input name="id" class="form-control" type="text" placeholder="Id de Producto" style="display: none;">
+										<input id="nameField" name="name" class="form-control" type="text"
+											placeholder="Nombre de Producto">
 									</div>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div class="productCatalogButtons">
-				<button id="saveButton" class="saveButton btn btn-primary">Guardar</button>
-				</div>
+									<div>
+										<span>Autor o Artista</span>
+										<input id="authorField" name="author" class=" form-control" type="text"
+											placeholder="Autor o Artista">
+
+									</div>
+									<div>
+										<span>Imagen</span>
+										<input id="imageField" name="img" class=" form-control" type="text" value="https://st4.depositphotos.com/14953852/24787/v/450/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"
+											placeholder="URL de imagen">
+									</div>
+									<div>
+										<span>Precio</span>
+										<input id="priceField" name="price" class="priceField form-control" type="number" step="any" value="0.00"
+											placeholder="Precio">
+									</div>
+									<div>
+										<div class="dropdown">
+											<span>Tipo</span>
+											<input id="typeField" name="type" class="form-control typeField" type="text"
+												placeholder="Tipo del Producto" value="A" style="display: none;">
+											<button id="typeButton" class="typeButton btn btn-secondary dropdown-toggle" type="button"
+												data-bs-toggle="dropdown" aria-expanded="false">Álbum</button>
+											<ul class="typeMenu dropdown-menu">
+												<li><a id="typeAlbum" class="typeAlbum dropdown-item" href="#">Álbum</a></li>
+												<li><a id="typeBook" class="typeBook dropdown-item" href="#">Libro</a></li>
+											</ul>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="productCatalogButtons">
+						<button id="saveButton" class=" btn btn-primary" type="submit">Guardar</button>
+					</div>
+				</form>
+
 			</div>
 		</div>
 	</div>
 
 
-
-
-	<div id="foot">
-		<footer>© 1996-2024, Rainforest.com, Inc. o sus afiliados</footer>
-	</div>
-</body>
+	{% endblock %}

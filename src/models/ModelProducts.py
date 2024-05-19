@@ -34,3 +34,39 @@ class ModelProducts():
 			return products
 		except Exception as ex:
 			raise Exception(ex)
+		
+	@classmethod
+	def update_product(self, db, product):
+		try:
+			cursor = db.connection.cursor()
+			query = f"UPDATE products set name='{product.name}', author='{product.author}', img='{product.img}', price='{product.price}', type='{product.type}' WHERE id='{product.id}'"
+			cursor.execute(query)
+			db.connection.commit() 
+			return
+		except Exception as ex:
+			raise Exception(ex)
+		
+	@classmethod
+	def insert_product(self, db, product):
+		try:
+			cursor = db.connection.cursor()
+			query = f"CALL sp_AddProduct('{product.name}','{product.author}','{product.img}','{product.price}','{product.type}')"
+			print(query)
+			cursor.execute(query)
+			db.connection.commit() 
+			return
+		except Exception as ex:
+			raise Exception(ex)
+	
+	@classmethod
+	def delete_product(self, db, id):
+		try:
+			cursor = db.connection.cursor()
+			
+			query = f"DELETE FROM products WHERE id='{id}'"
+			print('query: ',query)
+			cursor.execute(query)
+			db.connection.commit() 
+			return
+		except Exception as ex:
+			raise Exception(ex)
