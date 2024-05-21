@@ -5,6 +5,7 @@
 <script type="module" src="{{ url_for('static',filename='js/catalogScript.js') }}"></script>
 <script>
 	var complete_catalog = JSON.parse('{{ catalog|safe }}');
+	var current_user_id = '{{ current_user_id|safe }}';
 </script>
 {% endblock %}
 
@@ -16,7 +17,7 @@
 		<input id="catalogSearchbar" class="search" class="form-control" type="search" placeholder="Buscar producto...">
 	</div>
 	<div>
-		<a href="{{url_for('newproduct')}}"><button class="btn btn-success">Agregar Nuevo</button></a>
+		<a href="{{url_for('newproduct')}}"><button class="btn btn-success">Nuevo Producto</button></a>
 	</div>
 	<div id="catalogProductsArea">
 		<!-- Product Cards go here -->

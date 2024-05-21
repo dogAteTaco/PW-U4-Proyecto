@@ -13,6 +13,8 @@ let successArea;
 let typeAdminButton;
 let typeClientButton;
 let cartItems;
+let actionType;
+let typeField;
 
 class User {
 	constructor(id, password, type) {
@@ -39,85 +41,154 @@ document.addEventListener("DOMContentLoaded", function () {
 	listedUsers = document.getElementById("listedUsers");
 	typeAdminButton = document.getElementById("typeAdmin");
 	typeClientButton = document.getElementById("typeClient");
-
+	typeField = document.getElementById("typeField");
 	errorArea = document.getElementById("errorArea");
 	successArea = document.getElementById("successArea");
-	// If a user is already logged on it moves on to the landing page
-
+	actionType = document.getElementById("actionType");
+	// Blocks the fields
+	userField.setAttribute("readonly","true");
+		passwordField.setAttribute("readonly", "true");
+		saveButton.setAttribute("disabled", "true");
+		confirmPasswordField.setAttribute("readonly", "true");
+		fullNameField.setAttribute("readonly", "true");
+		deleteButton.setAttribute("disabled", "true");
+		typeButton.setAttribute("readonly", "true");
 	// Verifies that the logged user is an admin
 	listUsers();
 	const addUserButton = document.getElementById("addUserButton");
 	addUserButton.addEventListener("click", function (event) {
 		event.preventDefault();
 		userField.value = "";
-		userField.removeAttribute("disabled");
+		fullNameField.value = "";
+		
 		userField.focus();
 		passwordField.value = "";
 		isNewUser = true;
 
-		passwordField.removeAttribute("disabled");
+		userField.removeAttribute("readonly");
+		passwordField.removeAttribute("readonly");
 		saveButton.removeAttribute("disabled");
+		confirmPasswordField.removeAttribute("readonly");
+		fullNameField.removeAttribute("readonly");
 		deleteButton.setAttribute("disabled", "true");
-		typeButton.removeAttribute("disabled");
+		typeButton.removeAttribute("readonly");
 		typeButton.innerText = "Cliente";
 	});
 
 	saveButton.addEventListener("click", function (event) {
+		event.preventDefault();
+		event.stopPropagation();
 		if (userExists(userField.value) && isNewUser) {
 			errorArea.setAttribute("style", "display:grid");
-			errorArea.innerText = "Ya existe un usuario con ese Id.";
+			errorArea.innerText = "Ya existe un usuario con este nombre de Usuario";
+			//Removes the invalid class on the other fields
+			fullNameField.classList.remove("is-invalid");
+			passwordField.classList.remove("is-invalid");
+			confirmPasswordField.classList.remove("is-invalid");
+
+			//Adds the invalid class to the username field
+			userField.classList.add("is-invalid");
 		}
-		else if (userField.value.trim() == "" || passwordField.value.length < 5) {
+		else if (userField.value.trim() == ""){
 			errorArea.setAttribute("style", "display:grid");
-			errorArea.innerText = "Los campos de usuario y contrasena no deben estar vacios y la contrasena debe contener al menos 5 caracteres.";
+			errorArea.innerText = "El campo de usuario no puede estar vacío.";
+			//Removes the invalid class on the other fields
+			fullNameField.classList.remove("is-invalid");
+			passwordField.classList.remove("is-invalid");
+			confirmPasswordField.classList.remove("is-invalid");
+
+			//Adds the invalid class to the username field
+			userField.classList.add("is-invalid");
+		}
+		else if (fullNameField.value.trim() == ""){
+			errorArea.setAttribute("style", "display:grid");
+			errorArea.innerText = "El campo de Nombre Completo no puede estar vacío.";
+			//Removes the invalid class on the other fields
+			userField.classList.remove("is-invalid");
+			passwordField.classList.remove("is-invalid");
+			confirmPasswordField.classList.remove("is-invalid");
+
+			//Adds the invalid class to the username field
+			
+			fullNameField.classList.add("is-invalid");
+		}
+		else if(passwordField.value.length < 5&&isNewUser) {
+			errorArea.setAttribute("style", "display:grid");
+			errorArea.innerText = "La contraseña debe contener al menos 5 caractéres.";
+			//Removes the invalid class on it
+			userField.classList.remove("is-invalid");
+			confirmPasswordField.classList.remove("is-invalid");
+			fullNameField.classList.remove("is-invalid");
+
+			passwordField.classList.add("is-invalid");
+		}
+		else if(confirmPasswordField.value.length < 5&&isNewUser){
+			errorArea.setAttribute("style", "display:grid");
+			errorArea.innerText = "La contraseña debe contener al menos 5 caractéres.";
+			//Removes the invalid class on it
+			userField.classList.remove("is-invalid");
+			passwordField.classList.remove("is-invalid");
+			fullNameField.classList.remove("is-invalid");
+
+			confirmPasswordField.classList.add("is-invalid");
+		}
+		else if(confirmPasswordField.value!=passwordField.value){
+			errorArea.setAttribute("style", "display:grid");
+			errorArea.innerText = "Las contraseñas deben coincidir.";
+			//Removes the invalid class on it
+			userField.classList.remove("is-invalid");
+			fullNameField.classList.remove("is-invalid");
+
+			confirmPasswordField.classList.add("is-invalid");
+			passwordField.classList.add("is-invalid");
 		}
 		else if (userExists(userField.value) && !isNewUser) {
-			let existingUser = users.find(u => u.id == userField.value);
-			existingUser.password = passwordField.value;
-			existingUser.type = typeButton.innerText.charAt(0);
+			//Removes the invalid class on it
+			userField.classList.remove("is-invalid");
+			passwordField.classList.remove("is-invalid");
+			confirmPasswordField.classList.remove("is-invalid");
+			fullNameField.classList.remove("is-invalid");
+
 			errorArea.setAttribute("style", "display:none");
-			successArea.innerText = "Se guardo el usuario correctamente.";
+			successArea.innerText = "Se actualizo el usuario correctamente.";
 			successArea.setAttribute("style", "display:grid");
-			refreshUsers();
+			listUsers();
+			isNewUser = false;
+			actionType.value = "update";
+			var form = deleteButton.closest('form');
+				form.submit();
 		}
 		else {
-			addUser(userField.value, passwordField.value, typeButton.innerText.charAt(0));
+			userField.classList.remove("is-invalid");
+			passwordField.classList.remove("is-invalid");
+			confirmPasswordField.classList.remove("is-invalid");
+			fullNameField.classList.remove("is-invalid");
 			deleteButton.removeAttribute("disabled");
 			errorArea.setAttribute("style", "display:none");
 			successArea.innerText = "Se guardo el usuario correctamente.";
 			successArea.setAttribute("style", "display:grid");
+			// Resets the UI and reloads the users
 			listUsers();
 			isNewUser = false;
+			var form = deleteButton.closest('form');
+				form.submit();
 		}
 	});
 
 	deleteButton.addEventListener("click", function (event) {
-		// Deletes the user from the list and the storage
-		var index = users.map(x => {
-			return x.Id;
-		}).indexOf(userField.value);
-
-		users.splice(index, 1);
-		refreshUsers();
-		listUsers();
-		userField.value = "";
-		passwordField.value = "";
-		userField.setAttribute("disabled", "true");
-		passwordField.setAttribute("disabled", "true");
-		saveButton.setAttribute("disabled", "true");
-		deleteButton.setAttribute("disabled", "true");
-		typeButton.setAttribute("disabled", "true");
-		errorArea.setAttribute("style", "display:none");
-		successArea.setAttribute("style", "display:grid");
-		successArea.innerText("Se elimino el usuario correctamente.");
+		// Sets the POST method to be a delete POST method
+		actionType.value = "delete";
 	});
 	typeAdminButton.addEventListener("click", function (event) {
 		event.preventDefault();
 		typeButton.innerText = typeAdminButton.innerText;
+		typeField.value = "1";
+
 	});
 	typeClientButton.addEventListener("click", function (event) {
 		event.preventDefault();
 		typeButton.innerText = typeClientButton.innerText;
+		typeField.value = "0";
 	});
 });
 
@@ -131,26 +202,12 @@ ModalFunctionality();
 import { SearchBarFunctionatility } from './searchScript.js';
 SearchBarFunctionatility();
 
-
-// Function to add new users
-function addUser(userId, userPass, userType) {
-	if (userExists(userId)) {
-		console.log(`User with ID ${userId} exists.`);
-	} else {
-
-
-		refreshUsers();
-	}
-}
-
-// Refreshes the users on the localstorage
-function refreshUsers() {
-
-}
-
 //Checks if user already exists
-function userExists(userId) {
-
+function userExists(username) {
+	console.log(username);
+	console.log(users_catalog);
+	if(users_catalog.find(u => u.username == username))
+		return true;
 }
 
 function listUsers() {
@@ -167,13 +224,13 @@ function listUsers() {
 			userElement.addEventListener("click", function (event) {
 				event.preventDefault();
 				// Enables the fields and buttons
-				userField.removeAttribute("disabled")
-				passwordField.removeAttribute("disabled");
-				fullNameField.removeAttribute("disabled");
-				confirmPasswordField.removeAttribute("disabled");
+				userField.setAttribute("readonly",true)
+				passwordField.removeAttribute("readonly");
+				fullNameField.removeAttribute("readonly");
+				confirmPasswordField.removeAttribute("readonly");
 				saveButton.removeAttribute("disabled");
 				deleteButton.removeAttribute("disabled");
-				typeButton.removeAttribute("disabled");
+				typeButton.removeAttribute("readonly");
 				userIdField.value = user.id;
 				userField.value = user.username;
 				fullNameField.value = user.fullname;
@@ -182,15 +239,18 @@ function listUsers() {
 	
 				if (user.usertype == 1) {
 					typeButton.innerText = "Administrador";
+					typeField.value = 1;
 				}
 				else {
 					typeButton.innerText = "Cliente";
+					typeField.value = 0;
 				}
 				// Removes the ability to delete or change type of user of admin user
 				if (user.id == "1") {
-					typeButton.setAttribute("disabled", "true");
+					typeButton.setAttribute("readonly", "true");
 					deleteButton.setAttribute("disabled", "true");
 				}
+				// Indicates that the user was loaded
 				isNewUser = false;
 				errorArea.setAttribute("style", "display:none");
 				successArea.setAttribute("style", "display:none");

@@ -2,7 +2,8 @@ let cartItems;
 let cartCount;
 
 class CartItem {
-	constructor(id, quantity) {
+	constructor(user, id, quantity) {
+        this.user = user;
 		this.id = id;
 		this.quantity = quantity;
 	}
@@ -53,7 +54,7 @@ function loadBoughtItems() {
 	if(localStorage.getItem("cart")!=null&&localStorage.getItem("cart")!="undefined") {
 		cartData = JSON.parse(localStorage.getItem("cart"));
 		if (cartData) {
-			cartItems = cartData.map(item => new CartItem(item.id, item.quantity));
+			cartItems = cartData.map(item => new CartItem(item.user,item.id, item.quantity));
 		}
 		if(cartItems.lenght==0)
 		{
@@ -66,7 +67,7 @@ function loadBoughtItems() {
 		else{
 			// Recorrer los envíos y agregar filas a la tabla
 		cartCount = 0;
-        cartItems.forEach((item) => {
+        cartItems.filter(item => item.user === current_user_id).forEach((item) => {
             const row = document.createElement("tr");
             const currentItem = complete_catalog.find(p => p.id.toString() === item.id.toString());
 			if(!currentItem)
@@ -125,7 +126,7 @@ function refreshTotal() {
     }
     else {
         // Recorrer los envíos y agregar filas a la tabla
-        cartItems.forEach((item) => {
+        cartItems.filter(item => item.user === current_user_id).forEach((item) => {
             const currentItem = complete_catalog.find(p => p.id.toString() === item.id.toString());
 			if(currentItem)
             	subTotal = subTotal + Number.parseFloat(currentItem.price) * Number.parseFloat(item.quantity);

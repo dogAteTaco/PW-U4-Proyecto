@@ -1,5 +1,6 @@
 class CartItem {
-	constructor(id, quantity) {
+	constructor(user, id, quantity) {
+		this.user = user;
 		this.id = id;
 		this.quantity = quantity;
 	}
@@ -20,13 +21,13 @@ function loadBoughtItems() {
 		let cartData = JSON.parse(localStorage.getItem("cart"));
 		let items;
 		if (cartData) {
-			items = cartData.map(item => new CartItem(item.id, item.quantity));
+			items = cartData.map(item => new CartItem(item.user,item.id, item.quantity));
 		}
 		if (items.length != 0) {
 			cartTable.innerHTML = "";
 			console.log(items);
 			// Recorrer los envíos y agregar filas a la tabla
-			items.forEach((item) => {
+			items.filter(item => item.user === current_user_id).forEach((item) => {
 				const currentItem = complete_catalog.find(p => p.id.toString() === item.id.toString());
 				if (!currentItem)
 					return;
@@ -45,7 +46,9 @@ function loadBoughtItems() {
 				cartTable.appendChild(fila);
 				subTotal = subTotal + Number.parseFloat(currentItem.price) * Number.parseFloat(item.quantity);
 			});
-			localStorage.setItem("cart","[]");
+			items = items.filter(item => item.user !== current_user_id);
+			// Save the updated cartItems array back to localStorage
+			localStorage.setItem('cart', JSON.stringify(items));
 			let prodLabel = "producto";
 			if (items.length > 1)
 				prodLabel = "productos";

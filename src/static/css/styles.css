@@ -49,13 +49,23 @@ nav.navbar.justify-content-between.navbar-custom {
 
 .card img {
     padding: 4px;
-	max-height: 179px;
-	max-width: 179px;
-	height: 179px;
-	display: inline-block;
-    align-self: center;
+    max-width: 179px;
+    max-height: 179px;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+    display: block; 
 }
 
+.mt-2{
+	border-radius: 50px;
+}
+.vertical-center {
+    height: 179px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
 .card-text {
     font-size: x-large;
 }
@@ -77,6 +87,21 @@ nav.navbar.justify-content-between.navbar-custom {
     white-space: nowrap;
 }
 
+.card-title{
+	font-weight: 500;
+	font-size: medium;
+}
+.cantidadField{
+	font-size: xx-small;
+}
+
+.cantidadField,.btn,.btn-warning,.mt-2{
+	border-radius: 70px;
+	color: white;
+}
+.btn{
+	background-color: #f7ca00;
+}
 .card-container {
     width: 200px;
     height: 440px;

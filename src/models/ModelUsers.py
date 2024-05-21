@@ -27,7 +27,36 @@ class ModelUsers():
 				return None
 		except Exception as ex:
 			raise Exception(ex)
-	
+	@classmethod
+	def insert_user(self, db, user):
+		try:
+			cursor = db.connection.cursor()
+			cursor.execute(f"CALL sp_AddUser('{user.username}','{user.password}','{user.fullname}','{user.usertype}')")
+			db.connection.commit() 
+		except Exception as ex:
+			raise Exception(ex)
+		
+	@classmethod
+	def update_user(self, db, user):
+		try:
+			cursor = db.connection.cursor()
+			if user.password=="":
+				cursor.execute(f"UPDATE users SET fullname='{user.fullname}',usertype='{user.usertype}' WHERE id='{user.id}'")
+			else:
+				cursor.execute(f"UPDATE users SET password=SHA2('{user.password}',256),fullname='{user.fullname}',usertype='{user.usertype}' WHERE id='{user.id}'")
+			db.connection.commit() 
+		except Exception as ex:
+			raise Exception(ex)
+		
+	@classmethod
+	def delete_user(self, db, id):
+		try:
+			cursor = db.connection.cursor()
+			cursor.execute(f"DELETE FROM users WHERE id='{id}'")
+			db.connection.commit() 
+		except Exception as ex:
+			raise Exception(ex)
+		
 	@classmethod
 	def get_users(self, db):
 		try:

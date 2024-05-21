@@ -10,9 +10,11 @@
 {% endblock %}
 
 {% block cuerpo %}
-		
+<div class="container">
+	<center>
+		<h2>Nuevo Producto</h2>
 		<div class="card">
-			<h2>Nuevo Producto</h2>
+
 			<div class="card-body">
 				<form method="POST">
 					<table class="table">
@@ -22,7 +24,8 @@
 								<td>
 									<div>
 										<span>Nombre de Producto</span>
-										<input name="id" class="form-control" type="text" placeholder="Id de Producto" style="display: none;">
+										<input name="id" class="form-control" type="text" placeholder="Id de Producto"
+											style="display: none;">
 										<input id="nameField" name="name" class="form-control" type="text"
 											placeholder="Nombre de Producto">
 									</div>
@@ -34,24 +37,28 @@
 									</div>
 									<div>
 										<span>Imagen</span>
-										<input id="imageField" name="img" class=" form-control" type="text" value="https://st4.depositphotos.com/14953852/24787/v/450/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"
+										<input id="imageField" name="img" class=" form-control" type="text"
+											value="https://st4.depositphotos.com/14953852/24787/v/450/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg"
 											placeholder="URL de imagen">
 									</div>
 									<div>
 										<span>Precio</span>
-										<input id="priceField" name="price" class="priceField form-control" type="number" step="any" value="0.00"
-											placeholder="Precio">
+										<input id="priceField" name="price" class="priceField form-control"
+											type="number" step="any" value="0.00" placeholder="Precio">
 									</div>
 									<div>
 										<div class="dropdown">
 											<span>Tipo</span>
 											<input id="typeField" name="type" class="form-control typeField" type="text"
 												placeholder="Tipo del Producto" value="A" style="display: none;">
-											<button id="typeButton" class="typeButton btn btn-secondary dropdown-toggle" type="button"
-												data-bs-toggle="dropdown" aria-expanded="false">Álbum</button>
+											<button id="typeButton" class="typeButton btn btn-secondary dropdown-toggle"
+												type="button" data-bs-toggle="dropdown"
+												aria-expanded="false">Álbum</button>
 											<ul class="typeMenu dropdown-menu">
-												<li><a id="typeAlbum" class="typeAlbum dropdown-item" href="#">Álbum</a></li>
-												<li><a id="typeBook" class="typeBook dropdown-item" href="#">Libro</a></li>
+												<li><a id="typeAlbum" class="typeAlbum dropdown-item" href="#">Álbum</a>
+												</li>
+												<li><a id="typeBook" class="typeBook dropdown-item" href="#">Libro</a>
+												</li>
 											</ul>
 										</div>
 									</div>
@@ -66,7 +73,7 @@
 
 			</div>
 		</div>
-	</div>
-
-
-	{% endblock %}
+</div>
+</center>
+</div>
+{% endblock %}

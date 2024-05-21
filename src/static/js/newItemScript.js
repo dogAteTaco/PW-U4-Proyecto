@@ -10,14 +10,8 @@ class User {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-
-	let saveButton = document.getElementById("saveButton");
-	let nameField = document.getElementById("nameField");
-	let authorField = document.getElementById("authorField");
-	let priceField = document.getElementById("priceField");
 	let albumButton = document.getElementById("typeAlbum");
 	let bookButton = document.getElementById("typeBook");
-	let typeButton = document.getElementById("typeButton");
 	let imageField = document.getElementById("imageField");
 	let imageShown = document.getElementById("imageShown");
 	
@@ -26,37 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
 			imageShown.src = imageField.value;
 		else
 			imageShown.src = "../img/products/"+imageField.value;	
-	});
-
-	const catalogJSON = localStorage.getItem("catalog");
-
-    if(catalogJSON)
-        completeCatalog = JSON.parse(catalogJSON);
-	
-	saveButton.addEventListener('click', function(event) {
-		event.stopPropagation();
-		// Get the closest card item (it's corresponding card)
-		var card = saveButton.closest('.card');
-		// Removes background showing that values have changed if there were unsavedchanges
-		card.style.backgroundColor = 'transparent';
-
-
-		//Gets all the fields
-		var id = parseInt(completeCatalog[completeCatalog.length-1].id)+1;
-		
-		var name = nameField.value;
-		var author = authorField.value;
-		var price = priceField.value;
-		var type = typeButton.innerText;
-		var image = imageField.value;
-
-		if(type=="Libro")
-			type = "Book";
-		else
-			type = "CD";
-		
-		addItem(id,name,author,price,image,type);
-		window.location.href = "catalog.html";
 	});
 
 	imageField.addEventListener('input', function() {
@@ -115,19 +78,3 @@ import { ModalFunctionality } from './generalScript.js';
 ModalFunctionality();
 import { SearchBarFunctionatility } from './searchScript.js';
 SearchBarFunctionatility();
-
-function addItem(id,name,author,price,image,type)
-{
-	var newItem = {
-		id: id,
-		name: name,
-		author: author,
-		price: price,
-		image: image,
-		type: type
-	};
-
-	console.log(newItem);
-	completeCatalog.push(newItem);
-	refreshStorage();
-}

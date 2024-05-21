@@ -1,5 +1,6 @@
 class CartItem {
-	constructor(id, quantity) {
+	constructor(user, id, quantity) {
+		this.user = user;
 		this.id = id;
 		this.quantity = quantity;
 	}
@@ -75,7 +76,7 @@ export function refreshCart() {
 	if(localStorage.getItem("cart")!=null&&localStorage.getItem("cart")!="undefined") {
 		cartData = JSON.parse(localStorage.getItem("cart"));
 		if (cartData) {
-			cartItems = cartData.map(item => new CartItem(item.id, item.quantity));
+			cartItems = cartData.map(item => new CartItem(item.user,item.id, item.quantity));
 		}
 	}
 	const cartTag = document.getElementById("cart");
@@ -88,7 +89,7 @@ export function refreshCart() {
 	let cartItemDiv = document.createElement("div");
 	// Recalculates the total of the cart and redraws it
 	if(cartItems)
-		cartItems.forEach((item) => {
+		cartItems.filter(item => item.user === current_user_id).forEach((item) => {
 			var currentItem = complete_catalog.find(p => p.id.toString() === item.id.toString());
 			if(!currentItem)
 				return;
@@ -143,9 +144,9 @@ function removeById(id) {
 	let cartItems;
 	let cartData = JSON.parse(localStorage.getItem("cart"));
 	if (cartData) {
-		cartItems = cartData.map(item => new CartItem(item.id, item.quantity));
+		cartItems = cartData.map(item => new CartItem(item.user,item.id, item.quantity));
 	}
-	const index = cartItems.findIndex(item => item.id === id);
+	const index = cartItems.findIndex(item => item.id === id && item.user===current_user_id);
 	if (index !== -1) {
 		cartItems.splice(index, 1);
 		localStorage.setItem("cart", JSON.stringify(cartItems));

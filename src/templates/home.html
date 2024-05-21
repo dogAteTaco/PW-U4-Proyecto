@@ -11,11 +11,11 @@
 	var complete_catalog = JSON.parse('{{ catalog|safe }}');
 	var text_filter = '{{ text_filter|safe }}';
 	var type_filter = '{{ type_filter|safe }}';
+	var current_user_id = '{{ current_user_id|safe }}';
 </script>
 {% endblock %}
 
 {% block cuerpo %}
-
 <div class="container" id="catalogo-container">
 	<div class="row" id="catalogo">
 		<!-- Card containers will be dynamically generated here -->

@@ -4,7 +4,8 @@ var typeFilter = "E";
 let current_catalog = [];
 
 class CartItem {
-	constructor(id, quantity) {
+	constructor(user,id, quantity) {
+		this.user = user;
 		this.id = id;
 		this.quantity = quantity;
 	}
@@ -123,7 +124,7 @@ function loadProducts(catalog) {
 			card.innerHTML = `
 				<div id="${product.id}" class="card-container">
 					<div class="card">
-						<div><img src="${imageURL}" class="card-img-top" alt="${product.name}"></div>
+						<div class="vertical-center" style="height:179px;"><img src="${imageURL}" class="card-img-top" alt="${product.name}"></div>
 						<div class="card-body">
 							<h5 class="card-title">${product.name}</h5>
 							<p class="card-author">${product.author}</p>
@@ -132,7 +133,7 @@ function loadProducts(catalog) {
 								<span class="cents">${(product.price % 1).toFixed(2).substr(2)}</span>
 							</div>
 							<input type="number" min="0" class="form-control" data-id="cantidadProducto" value="1">
-							<button class="cantidadField btn btn-primary mt-2" data-id="${product.name}">Añadir</button>
+							<center><button class="cantidadField btn btn-warning mt-2 rounded-5 custom-button" data-id="${product.name}">Agregar al Carrito</button></center>
 						</div>
 					</div>
 				</div>
@@ -146,7 +147,6 @@ function loadProducts(catalog) {
 
 		buttons.forEach(button => {
 			button.addEventListener('click', function () {
-				
 				let cartItems;
 				let cartData;
 
@@ -159,9 +159,8 @@ function loadProducts(catalog) {
 					cartData = JSON.parse(localStorage.getItem("cart"));
 				}
 				if (cartData) {
-					cartItems = cartData.map(item => new CartItem(item.id, item.quantity));
+					cartItems = cartData.map(item => new CartItem(item.user,item.id, item.quantity));
 				}
-				console.log(cartItems);
 				// Gets the card tag where it was clicked
 				const cardContainer = this.closest('.card-container');
 				// Gets the id from the card
@@ -171,12 +170,12 @@ function loadProducts(catalog) {
 				// Gets the value for the quantity
 				const quantity = quantityField.value;
 				// Checks if the item is already on the cart
-				if (!cartItems.some(i => i.id == productId)) {
-					cartItems.push(new CartItem(productId, quantity));
+				if (!cartItems.some(i => i.id == productId && i.user==current_user_id)) {
+					cartItems.push(new CartItem(current_user_id,productId, quantity));
 					added = added + 1;
 				}
 				else {
-					const cardProduct = cartItems.find(p => p.id === productId);
+					const cardProduct = cartItems.find(p => p.id === productId&& p.user==current_user_id);
 					cardProduct.quantity = Number.parseInt(cardProduct.quantity) + Number.parseInt(quantity);
 				}
 				localStorage.setItem("cart", JSON.stringify(cartItems));
