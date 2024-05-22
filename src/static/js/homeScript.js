@@ -120,18 +120,26 @@ function loadProducts(catalog) {
 			let imageURL = product.img;
 			if (product.img&&!product.img.toLowerCase().startsWith("http"))
 				imageURL = "{{ url_for('static',filename='img/" + product.img+"')}}";
-
+			let product_type = "CD de audio";
+			if(product.type=="B")
+				product_type = "Libro";
 			card.innerHTML = `
 				<div id="${product.id}" class="card-container">
 					<div class="card">
-						<div class="vertical-center" style="height:179px;"><img src="${imageURL}" class="card-img-top" alt="${product.name}"></div>
+						<div class="vertical-center" style="height:298px;"><img src="${imageURL}" class="card-img-top" alt="${product.name}"></div>
+							
 						<div class="card-body">
+						<img style=" height:24px;width:100px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/5_stars.svg/1280px-5_stars.svg.png"></img>
 							<h5 class="card-title">${product.name}</h5>
-							<p class="card-author">${product.author}</p>
+							<p class="card-author"><font size="2.5">de ${product.author}</font></p>
+							<p style="color:#007185;font-weight:500;height:15px;">${product_type}</p>
 							<div class="card-price">
+
 								<span class="main-price">$${parseInt(product.price)}</span>
 								<span class="cents">${(product.price % 1).toFixed(2).substr(2)}</span>
 							</div>
+							<font size="2.5" align="top"><p>Hasta 24 meses de $${(product.price/24).toFixed(2).substr(2)} con costo de financiamiento.</p>
+							<p>Entrega GRATIS el <b>lun, 27 de may </b> si compras $299 en artículos enviados por Amazon</p></font>
 							<input type="number" min="0" class="form-control" data-id="cantidadProducto" value="1">
 							<center><button class="cantidadField btn btn-warning mt-2 rounded-5 custom-button" data-id="${product.name}">Agregar al Carrito</button></center>
 						</div>

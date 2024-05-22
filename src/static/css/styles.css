@@ -37,7 +37,7 @@ nav.navbar.justify-content-between.navbar-custom {
 #catalogo {
     padding: 15px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     grid-gap: 5px 20px;
     grid-auto-flow: dense;
     /* Ensure that remaining items fill in the gaps */
@@ -45,27 +45,30 @@ nav.navbar.justify-content-between.navbar-custom {
 
 .card {
     align-items: center;
+    width: 300px;
 }
 
 .card img {
     padding: 4px;
-    max-width: 179px;
-    max-height: 179px;
+    max-width: 298px;
+    max-height: 298px;
     width: auto;
     height: auto;
     object-fit: cover;
     display: block; 
+    
 }
 
 .mt-2{
 	border-radius: 50px;
 }
 .vertical-center {
-    height: 179px; 
+    height: 350px; 
     display: flex; 
     justify-content: center; 
     align-items: center; 
 }
+
 .card-text {
     font-size: x-large;
 }
@@ -83,20 +86,38 @@ nav.navbar.justify-content-between.navbar-custom {
     /* Impide que la tarjeta tenga un titulo largo */
     text-overflow: ellipsis;
     overflow: hidden;
-    width: 160px;
+    
+    width: 250px;
     white-space: nowrap;
 }
 
+.card-title{
+    height: 17px;
+    padding-bottom: 0px;
+}
+
+.card-text{
+    height: 8px;
+    
+}
+
+.card-author{
+    height:20px;
+}
 .card-title{
 	font-weight: 500;
 	font-size: medium;
 }
 .cantidadField{
 	font-size: xx-small;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .cantidadField,.btn,.btn-warning,.mt-2{
 	border-radius: 70px;
+    padding-left: 10px;
+    padding-right: 10px;
 	color: white;
 }
 .btn{
@@ -104,7 +125,7 @@ nav.navbar.justify-content-between.navbar-custom {
 }
 .card-container {
     width: 200px;
-    height: 440px;
+    height: 670px;
     margin: 0px;
     padding: 10px;
     float: left;
